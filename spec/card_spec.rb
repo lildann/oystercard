@@ -27,4 +27,16 @@ describe Oystercard do
     end
   end
 
+  context "I need my fare deducated from my card" do
+
+    it 'deducts money from my balance' do
+      expect(subject).to respond_to(:deduct).with(1).argument
+      subject.top_up(10)
+      subject.deduct(5)
+      expect(subject.balance).to eq(5)
+    end
+
+  end
+
+
 end

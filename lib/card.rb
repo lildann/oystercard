@@ -11,12 +11,21 @@ class Oystercard
   def top_up(money)
     @balance += money
     raise "Top up amount exceeds £#{BALANCE_LIMIT}" if exceeds_balance?
-    "£#{@balance}"
+    monetize
+  end
+
+  def deduct(fare)
+    @balance -= fare
+    monetize
   end
 
   private
 
   def exceeds_balance?
     @balance > BALANCE_LIMIT
+  end
+
+  def monetize
+    "£#{@balance}"
   end
 end
