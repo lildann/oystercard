@@ -1,20 +1,20 @@
 ## OYSTERCARD challenge domain model
 
 Nouns / classes: 
-• Card (has a capacity and a minimum amount)
-• Money
-• Fare
-• Journey
+*  Card (has a capacity and a minimum amount)
+*  Money
+*  Fare
+*  Journey
 
 Verbs / methods:
-• balance 
-• add(money)
-• deduct(fare) / pay_for(journey) / fare_correct?
-• touch_in(card) / penalty_charge
-• touch_out(card) / penalty_charge
-• view_start_of_journey
-• view_all_journeys
-• view_zone_of_station
+* balance 
+*  add(money)
+*  deduct(fare) / pay_for(journey) / fare_correct?
+*  touch_in(card) / penalty_charge
+*  touch_out(card) / penalty_charge
+*  view_start_of_journey
+*  view_all_journeys
+*  view_zone_of_station
 
 
 
