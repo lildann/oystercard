@@ -10,13 +10,13 @@ class Oystercard
 
   def top_up(money)
     @balance += money
-    raise "Top up amount exceeds maximum balance" if exceeds_balance?(money)
+    raise "Top up amount exceeds £#{BALANCE_LIMIT}" if exceeds_balance?
     "£#{@balance}"
   end
 
   private
 
-  def exceeds_balance?(top_up_amount)
-    @balance + top_up_amount > BALANCE_LIMIT
+  def exceeds_balance?
+    @balance > BALANCE_LIMIT
   end
 end
