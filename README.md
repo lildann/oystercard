@@ -1,13 +1,19 @@
 ## OYSTERCARD challenge domain model
 
+```
+Install Gemfile
+
+## OYSTERCARD challenge domain model
+
 Nouns / classes: 
-*  Card (has a capacity and a minimum amount)
-*  Money
+*  Card (has a limit and a minimum amount)
+*  Money 
 *  Fare
 *  Journey
+*  Station
 
 Verbs / methods:
-* balance 
+*  balance 
 *  add(money)
 *  deduct(fare) / pay_for(journey) / fare_correct?
 *  touch_in(card) / penalty_charge
