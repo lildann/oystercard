@@ -33,13 +33,20 @@ describe Oystercard do
 
   context "when travelling" do
     
+    before do
+      subject.top_up(described_class::BALANCE_LIMIT)
+    end
+    
     it 'when not on a journey' do
       expect(subject).not_to be_in_journey
     end
 
     it 'when card touches in user is on a journey' do
       expect(subject).to respond_to(:touch_in)
-      subject.touch_in 
+      # mock_balance = double
+      balance = 0
+      subject
+      expect { subject.touch_in }.to raise_error "Not enough funds on card"
       expect(subject).to be_in_journey
     end
 
