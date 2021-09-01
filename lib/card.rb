@@ -11,7 +11,7 @@ class Oystercard
 
   def top_up(money)
     @balance += money
-    raise "Top up amount exceeds £#{BALANCE_LIMIT}" if exceeds_balance?
+    fail "Balance exceeded: £#{BALANCE_LIMIT}" if exceeds_balance?
     monetize
   end
 
@@ -25,7 +25,7 @@ class Oystercard
   end
 
   def touch_in
-    fail "Not enough funds on card" if @balance < MINIMUM_BALANCE
+    fail "Not enough funds on card" if balance_too_low?
     @in_journey = true
   end
 
@@ -37,6 +37,10 @@ class Oystercard
 
   def exceeds_balance?
     @balance > BALANCE_LIMIT
+  end
+
+  def balance_too_low?
+    @balance < MINIMUM_BALANCE
   end
 
   def monetize

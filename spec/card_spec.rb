@@ -12,13 +12,7 @@ describe Oystercard do
     end
 
     it 'adds money to balance' do 
-      subject.top_up(10)
-      expect(subject.balance).to eq(10)
-    end
-
-    it 'raises an error when the top up amount exceeds the £90 limit' do
-      expect(described_class::BALANCE_LIMIT).to eq 90
-      expect { subject.top_up(91) }.to raise_error "Top up amount exceeds £#{described_class::BALANCE_LIMIT}"
+      expect{ subject.top_up 1 }.to change{ subject.balance }.by 1
     end
 
     it 'deducts money from balance' do
@@ -26,28 +20,31 @@ describe Oystercard do
       subject.deduct(5)
       expect(subject.balance).to eq(5)
     end
+
+    it 'error when balance exceeds £90 limit' do
+      expect(described_class::BALANCE_LIMIT).to eq 90
+      expect { subject.top_up(91) }.to raise_error "Balance exceeded: £#{described_class::BALANCE_LIMIT}"
+    end
   end
 
   context "when travelling" do
-    # before do
-    #   subject.top_up(described_class::BALANCE_LIMIT)
-    # end
-    
-    it 'when not on a journey' do
+    it 'if not on journey' do
       expect(subject).not_to be_in_journey
     end
 
-    it 'raise error if balance is to low to start journey' do
+    it 'error if balance is too low to start journey' do
       expect { subject.touch_in }.to raise_error "Not enough funds on card"
       expect(subject).not_to be_in_journey
-      #raising error 
     end
 
-    it 'touching in, user is on a journey' do
+    it 'touch in, user is on journey' do
+      subject.top_up(10)
+      subject.touch_in
       expect(subject).to be_in_journey
     end
 
-    it 'touching out, user is not on a journey' do
+    it 'touch out, user is not on journey' do
+      subject.top_up(10)
       subject.touch_in
       subject.touch_out
       expect(subject).not_to be_in_journey
@@ -55,3 +52,7 @@ describe Oystercard do
   end
 
 end
+
+  # before do
+    #   subject.top_up(described_class::BALANCE_LIMIT)
+    # end
