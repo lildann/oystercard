@@ -1,12 +1,11 @@
 class Oystercard
 
   BALANCE_LIMIT = 90
+  attr_reader :balance
 
   def initialize(balance=0)
     @balance = balance
   end
-
-  attr_reader :balance
 
   def top_up(money)
     @balance += money
@@ -17,6 +16,14 @@ class Oystercard
   def deduct(fare)
     @balance -= fare
     monetize
+  end
+
+  def in_journey?
+    false
+  end
+
+  def touch_in
+    true
   end
 
   private

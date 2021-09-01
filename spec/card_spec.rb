@@ -31,5 +31,19 @@ describe Oystercard do
 
   end
 
+  context "is the user on a journey" do
+    
+    it 'when not on a journey' do
+      expect(subject.in_journey?).to eq false
+    end
+
+    it 'when card touches in' do
+      expect(subject).to respond_to(:touch_in)
+      expect{ subject.touch_in }.to change(subject.in_journey?).to true
+    end
+  end
+
+end
+
 
 end
