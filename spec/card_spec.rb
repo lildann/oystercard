@@ -3,7 +3,8 @@ describe Oystercard do
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
   it { is_expected.to respond_to(:touch_in).with(1).argument } 
-  it { is_expected.to respond_to(:touch_out).with(1).argument  }
+  it { is_expected.to respond_to(:touch_out).with(1).argument }
+  it { is_expected.to respond_to(:list_trips) }
 
   let!(:starting_station) { "Waterloo" }
   let!(:exit_station) { "Kingston" }
@@ -23,7 +24,7 @@ describe Oystercard do
     end
   end
 
-  context "when travelling" do
+  context 'when travelling' do
     it 'if not on journey' do
       expect(subject).not_to be_in_journey
     end
@@ -63,8 +64,6 @@ describe Oystercard do
       subject.touch_in(starting_station)
       expect{ subject.touch_out(exit_station) }.to change{ subject.starting_station }.to(nil)
     end 
-
-    
   end 
 
     context 'journey history' do 

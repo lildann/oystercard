@@ -35,11 +35,21 @@ class Oystercard
   def touch_out(station)
     deduct(FARE)
     @exit_station = station
-    @trip[:start] = @starting_station
-    @trip[:end] = @exit_station
+    add_trip
     @starting_station = nil 
     @exit_station
+  end
+
+  def add_trip
+    @trip[:start] = @starting_station
+    @trip[:end] = @exit_station
     @trip_history << @trip
+  end
+
+  def list_trips
+    @trip_history.each do |trip|
+      puts trip
+    end
   end
 
 
