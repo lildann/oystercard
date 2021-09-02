@@ -2,23 +2,16 @@ require 'card'
 describe Oystercard do
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
-  it { is_expected.to respond_to(:deduct).with(1).argument }
-  it { is_expected.to respond_to(:touch_in) }
-  it { is_expected.to respond_to(:touch_out) }
+  it { is_expected.to respond_to(:touch_in).with(1).argument } }
+  it { is_expected.to respond_to(:touch_out).with(1).argument }
 
-  context 'money on card' do
+  context 'card balance' do
     it 'starts with a balance of 0' do
       expect(subject.balance).to eq 0
     end
 
     it 'adds money to balance' do 
       expect{ subject.top_up 1 }.to change{ subject.balance }.by 1
-    end
-
-    it 'deducts money from balance' do
-      subject.top_up(10)
-      subject.deduct(5)
-      expect(subject.balance).to eq(5)
     end
 
     it 'error when balance exceeds £90 limit' do
@@ -49,10 +42,27 @@ describe Oystercard do
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
-  end
 
+    it 'deducts fare when touching out' do
+      subject.top_up(10)
+      subject.touch_in
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-described_class::FARE)
+    end
+  end
 end
 
+
+
+    
   # before do
-    #   subject.top_up(described_class::BALANCE_LIMIT)
+  #   subject.top_up(described_class::BALANCE_LIMIT)
+  # end
+
+
+  # Tests no longer needed for #deduct method - moved to private method (protected)
+    # it { is_expected.to respond_to(:deduct).with(1).argument }  
+    # it 'deducts money from balance' do
+    #   subject.top_up(10)
+    #   subject.deduct(5)
+    #   expect(subject.balance).to eq(5)
     # end

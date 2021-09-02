@@ -1,8 +1,9 @@
 class Oystercard
-
   BALANCE_LIMIT = 90
   MINIMUM_BALANCE = 1
-  attr_reader :balance, :in_journey
+  FARE = 3
+
+  attr_reader :balance, :in_journey#, :entry_station
 
   def initialize(balance=0)
     @balance = balance
@@ -11,12 +12,7 @@ class Oystercard
 
   def top_up(money)
     @balance += money
-    fail "Balance exceeded: £#{BALANCE_LIMIT}" if exceeds_balance?
-    monetize
-  end
-
-  def deduct(fare)
-    @balance -= fare
+    fail "Balance exceeded: £#{BALANCE_LIMIT}" if balance_exceeded?
     monetize
   end
 
@@ -24,18 +20,25 @@ class Oystercard
     @in_journey
   end
 
-  def touch_in
+  def touch_in(station) #added test that touch_in should receive 1 argument
     fail "Not enough funds on card" if balance_too_low?
     @in_journey = true
+    # @entry_station = station 
   end
 
   def touch_out
     @in_journey = false
+    deduct(FARE)
   end
 
   private
 
-  def exceeds_balance?
+  def deduct(fare)
+    @balance -= fare
+    monetize
+  end
+
+  def balance_exceeded?
     @balance > BALANCE_LIMIT
   end
 
