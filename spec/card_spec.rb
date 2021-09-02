@@ -3,9 +3,10 @@ describe Oystercard do
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
   it { is_expected.to respond_to(:touch_in).with(1).argument } 
-  it { is_expected.to respond_to(:touch_out) }
+  it { is_expected.to respond_to(:touch_out).with(1).argument  }
 
-  let!(:station) { "Waterloo" }
+  let!(:starting_station) { "Waterloo" }
+  let!(:exit_station) { "Kingston" }
 
   context 'card balance' do
     it 'starts with a balance of 0' do
@@ -28,40 +29,47 @@ describe Oystercard do
     end
 
     it 'error if balance is too low to start journey' do
-      expect { subject.touch_in(station) }.to raise_error "Not enough funds on card"
+      expect { subject.touch_in(starting_station) }.to raise_error "Not enough funds on card"
       expect(subject).not_to be_in_journey
     end
 
     it 'touch in, user is on journey' do
       subject.top_up(10)
-      subject.touch_in(station)
+      subject.touch_in(starting_station)
       expect(subject).to be_in_journey
     end
 
     it 'touch out, user is not on journey' do
       subject.top_up(10)
-      subject.touch_in(station)
-      subject.touch_out
+      subject.touch_in(starting_station)
+      subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
     end
 
     it 'deducts fare when touching out' do
       subject.top_up(10)
-      subject.touch_in(station)
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-described_class::FARE)
+      subject.touch_in(starting_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-described_class::FARE)
     end
 
     it 'stores starting station when touching in' do
       subject.top_up(10)
-      subject.touch_in(station)
-      expect(subject.starting_station).to eq(station)
+      subject.touch_in(starting_station)
+      expect(subject.starting_station).to eq(starting_station)
     end
 
     it 'forgets the starting station when touching out' do 
       subject.top_up(10)
-      subject.touch_in(station)
-      expect{ subject.touch_out }.to change{ subject.starting_station }.to(nil)
+      subject.touch_in(starting_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.starting_station }.to(nil)
     end 
+
+    it 'remembers the trip' do 
+      subject.top_up(10)
+      subject.touch_in(starting_station)
+      subject.touch_out(exit_station)
+      expect(subject.trip).to eq({:start => starting_station, :end => exit_station})
+    end
   end
 end
 
