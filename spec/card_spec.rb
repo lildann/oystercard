@@ -5,7 +5,7 @@ describe Oystercard do
   it { is_expected.to respond_to(:touch_in).with(1).argument } 
   it { is_expected.to respond_to(:touch_out) }
 
-  let(:station) { "Waterloo" }
+  let!(:station) { "Waterloo" }
 
   context 'card balance' do
     it 'starts with a balance of 0' do
@@ -56,6 +56,12 @@ describe Oystercard do
       subject.touch_in(station)
       expect(subject.starting_station).to eq(station)
     end
+
+    it 'forgets the starting station when touching out' do 
+      subject.top_up(10)
+      subject.touch_in(station)
+      expect{ subject.touch_out }.to change{ subject.starting_station }.to(nil)
+    end 
   end
 end
 

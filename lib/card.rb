@@ -18,18 +18,21 @@ class Oystercard
   end
 
   def in_journey?
-    @in_journey
+    if @starting_station == nil 
+      @in_journey = false 
+    else 
+      @in_journey = true
+    end 
   end
 
   def touch_in(station) 
     fail "Not enough funds on card" if balance_too_low?
-    @in_journey = true
     @starting_station = station
   end
 
   def touch_out
-    @in_journey = false
     deduct(FARE)
+    @starting_station = nil 
   end
 
   private
