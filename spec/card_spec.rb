@@ -78,6 +78,14 @@ describe Oystercard do
         subject.touch_out(exit_station)
         expect(subject.trip).to eq({:start => starting_station, :end => exit_station})
       end 
+
+      it 'adds trip to trip history' do 
+        subject.top_up(10)
+        subject.touch_in(starting_station)
+        subject.touch_out(exit_station)
+        expect(subject.trip_history).to eq([subject.trip])
+      end 
+
     end 
 
 end

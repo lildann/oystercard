@@ -39,6 +39,7 @@ class Oystercard
     @trip[:end] = @exit_station
     @starting_station = nil 
     @exit_station
+    @trip_history << @trip
   end
 
 
