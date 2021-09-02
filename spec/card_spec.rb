@@ -64,13 +64,22 @@ describe Oystercard do
       expect{ subject.touch_out(exit_station) }.to change{ subject.starting_station }.to(nil)
     end 
 
-    it 'remembers the trip' do 
-      subject.top_up(10)
-      subject.touch_in(starting_station)
-      subject.touch_out(exit_station)
-      expect(subject.trip).to eq({:start => starting_station, :end => exit_station})
-    end
-  end
+    
+  end 
+
+    context 'journey history' do 
+      it 'starts with an empty list of trips' do 
+        expect(subject.trip_history).to be_empty
+      end 
+      
+      it 'creates one journey when touching in and out' do 
+        subject.top_up(10)
+        subject.touch_in(starting_station)
+        subject.touch_out(exit_station)
+        expect(subject.trip).to eq({:start => starting_station, :end => exit_station})
+      end 
+    end 
+
 end
 
 
